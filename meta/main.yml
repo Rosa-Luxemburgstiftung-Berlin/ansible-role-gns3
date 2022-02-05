@@ -1,0 +1,16 @@
+galaxy_info:
+  author: Klaus Zerwes
+  description: install gns3 env on debian based systems
+  company: Rosa-Luxemburgstiftung-Berlin
+  license: GPL-3.0-or-later
+  min_ansible_version: 2.12
+
+  platforms:
+    - name: debian
+      versions: 11
+
+  galaxy_tags:
+    - gns3
+
+dependencies:
+  - geerlingguy.docker  # https://github.com/geerlingguy/ansible-role-docker.git
