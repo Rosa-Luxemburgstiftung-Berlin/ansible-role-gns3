@@ -1,0 +1,150 @@
+---
+- name: set desired version of the ppa for ubuntu
+  set_fact:
+    gns3_ppa_distribution: "{{ gns3_ppa_distribution }}"
+  when:
+    - gns3_ppa_distribution is undefined
+    - ansible_distribution == 'Ubuntu'
+
+# FIXME: set to jammy as soon as it is available
+- name: set desired version of the ppa for debian bookworm
+  set_fact:
+    gns3_ppa_distribution: impish
+  when:
+    - gns3_ppa_distribution is undefined
+    - ansible_distribution == 'Debian'
+    - ansible_distribution_version | int >= 12
+
+- name: set desired version of the ppa for debian bullseye
+  set_fact:
+    gns3_ppa_distribution: focal
+    gns3_pip_packages:
+      - gns3-server
+      - gns3-gui
+  when:
+    - gns3_ppa_distribution is undefined
+    - ansible_distribution == 'Debian'
+    - ansible_distribution_version | int >= 11
+
+- name: set desired version of the ppa for debian buster
+  set_fact:
+    gns3_ppa_distribution: bionic
+    gns3_pip_packages:
+      - gns3-server
+      - gns3-gui
+  when:
+    - gns3_ppa_distribution is undefined
+    - ansible_distribution == 'Debian'
+    - ansible_distribution_version | int >= 10
+
+- name: set desired version of the ppa for debian stretch
+  set_fact:
+    gns3_ppa_distribution: xenial
+  when:
+    - gns3_ppa_distribution is undefined
+    - ansible_distribution == 'Debian'
+    - ansible_distribution_version | int >= 9
+
+- name: assert gns3_ppa_distribution is set
+  assert:
+    that: gns3_ppa_distribution is defined
+    fail_msg: "unable to set 'gns3_ppa_distribution' automatically"
+    success_msg: "using gns3_ppa_distribution {{ gns3_ppa_distribution }}"
+
+- name: ensure packes from pip are not installed via dpkg
+  apt:
+    name: "{{ gns3_pip_packages | intersect(gns3_ppa_packages) }}"
+    state: absent
+    purge: true
+
+- name: add gns3-ppa key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: "{{ gns3_ppa_key }}"
+    state: present
+
+- name: set up ppa in sources list
+  apt_repository:
+    repo: "deb {{ gns3_ppa_url }} {{ gns3_ppa_distribution }} {{ gns3_ppa_component }}"
+    state: present
+    filename: gns3-ppa
+
+- name: install prereq
+  apt:
+    name: "{{ gns3_prereq }}"
+
+- name: install packages via pip
+  pip:
+    name: "{{ gns3_pip_packages }}"
+    executable: pip3
+  when: gns3_pip_packages
+
+- name: install packages
+  apt:
+    name: "{{ gns3_ppa_packages | difference(gns3_pip_packages) }}"
+
+- name: remove ppa in sources list
+  apt_repository:
+    repo: "deb {{ gns3_ppa_url }} {{ gns3_ppa_distribution }} {{ gns3_ppa_component }}"
+    state: absent
+    filename: gns3-ppa
+  when: gns3_ppa_remove_after_install
+
+- name: "create gns3_system_group {{ gns3_system_group }}"
+  group:
+    name: "{{ gns3_system_group }}"
+    system: true
+
+- name: "create gns3_system_user {{ gns3_system_user }}"
+  user:
+    name: "{{ gns3_system_user }}"
+    system: true
+    group: "{{ gns3_system_group }}"
+    groups: "{{ gns3_groups }}"
+    home: "{{ gns3_system_user_home }}"
+
+- name: create gns3 cfg dir
+  file:
+    path: /etc/gns3
+    state: directory
+    mode: 0750
+    owner: "{{ gns3_system_user }}"
+    group: "{{ gns3_system_group }}"
+
+- name: create gns3 log dir
+  file:
+    path: /var/log/gns3
+    state: directory
+    mode: 0750
+    owner: "{{ gns3_system_user }}"
+    group: "{{ gns3_system_group }}"
+
+- name: configure gns3 server
+  template:
+    src: gns3_server.conf.j2
+    dest: /etc/gns3/gns3_server.conf
+    mode: 0640
+    owner: root
+    group: "{{ gns3_system_group }}"
+
+- name: install systemd service file
+  template:
+    src: gns3.service.j2
+    dest: /lib/systemd/system/gns3.service
+    mode: 0755
+    owner: root
+    group: root
+
+- name: enable systemd service
+  systemd:
+    name: gns3.service
+    enabled: true
+    masked: false
+    daemon_reload: true
+
+- name: start systemd service
+  systemd:
+    name: gns3.service
+    state: started
+
+...
