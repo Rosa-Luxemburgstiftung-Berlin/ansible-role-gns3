@@ -5,7 +5,8 @@ gns3_ppa_key: F88F6D313016330404F710FC9A2FD067A2E3EF7B
 # url of the PPA to use; just change this if you know what you are doing
 gns3_ppa_url: http://ppa.launchpad.net/gns3/ppa/ubuntu
 
-# set the distribution to use; if this is undefined, it will be set automatically
+# set the distribution to use;
+# if this is undefined, it will be set automatically
 # gns3_ppa_distribution:
 
 # gns3_ppa_component to use from the ppa
@@ -62,7 +63,7 @@ gns3_system_group: gns3
 
 # server setting
 # for description see:
-#  https://raw.githubusercontent.com/GNS3/gns3-server/master/conf/gns3_server.conf
+# https://raw.githubusercontent.com/GNS3/gns3-server/master/conf/gns3_server.conf
 gns3_server_bindip: 0.0.0.0
 gns3_server_port: 3080
 gns3_server_allowed_interfaces: "virbr0,{{ ansible_default_ipv4.interface }}"
