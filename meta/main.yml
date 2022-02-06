@@ -1,4 +1,6 @@
 galaxy_info:
+  role_name: ansible_gns3
+  namespace: rls
   author: Klaus Zerwes
   description: install gns3 env on debian based systems
   company: Rosa-Luxemburgstiftung-Berlin

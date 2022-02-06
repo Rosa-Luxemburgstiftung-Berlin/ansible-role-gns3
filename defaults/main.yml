@@ -8,7 +8,7 @@ gns3_ppa_url: http://ppa.launchpad.net/gns3/ppa/ubuntu
 # set the distribution to use; if this is undefined, it will be set automatically
 # gns3_ppa_distribution:
 
-# gns3_ppa_component to use from the ppa 
+# gns3_ppa_component to use from the ppa
 gns3_ppa_component: main
 
 # gns3_ppa_packages: list of packages to install from ppa
@@ -53,7 +53,7 @@ gns3_groups:
   - libvirt
   - docker
   - ubridge
-  #- wireshark
+  # - wireshark
 
 # user/group to run the gns3 server
 gns3_system_user: gns3
