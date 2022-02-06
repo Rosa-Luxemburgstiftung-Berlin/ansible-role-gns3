@@ -51,6 +51,11 @@
     fail_msg: "unable to set 'gns3_ppa_distribution' automatically"
     success_msg: "using gns3_ppa_distribution {{ gns3_ppa_distribution }}"
 
+- name: install prereq
+  apt:
+    name: "{{ gns3_prereq }}"
+    update_cache: true
+
 - name: ensure packes from pip are not installed via dpkg
   apt:
     name: "{{ gns3_pip_packages | intersect(gns3_ppa_packages) }}"
@@ -68,10 +73,6 @@
     repo: "deb {{ gns3_ppa_url }} {{ gns3_ppa_distribution }} {{ gns3_ppa_component }}"
     state: present
     filename: gns3-ppa
-
-- name: install prereq
-  apt:
-    name: "{{ gns3_prereq }}"
 
 - name: install packages via pip
   pip:
