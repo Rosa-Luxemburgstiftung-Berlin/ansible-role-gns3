@@ -1,7 +1,6 @@
 ---
 galaxy_info:
-  role_name: ansible_gns3
-  namespace: rls
+  role_name: ansible-role-gns3
   author: Klaus Zerwes
   description: install gns3 env on debian based systems
   company: Rosa-Luxemburgstiftung-Berlin
@@ -16,4 +15,5 @@ galaxy_info:
     - gns3
 
 dependencies:
-  - geerlingguy.docker  # https://github.com/geerlingguy/ansible-role-docker.git
+  - role: geerlingguy.docker  # https://github.com/geerlingguy/ansible-role-docker.git
+    when: not lookup('env', 'MOLECULE_FILE')
