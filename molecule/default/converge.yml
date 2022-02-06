@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    # required, as we skip the real install of docker
+    - name: ensure group docker exists
+      group:
+        name: docker
+        system: true
+    - name: "Include ansible-role-gns3"
+      include_role:
+        name: "ansible-role-gns3"

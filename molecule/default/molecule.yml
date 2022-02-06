@@ -1,0 +1,26 @@
+---
+driver:
+  name: docker
+platforms:
+  - name: debian-bullseye
+    image: debian:bullseye
+    dockerfile: Dockerfile-debian-bullseye.j2
+    privileged: true
+    override_command: false
+    tmpfs:
+      - /run
+      - /run/lock
+      - /tmp
+    capabilities:
+      - SYS_ADMIN
+    security_opts:
+      - seccomp=unconfined
+
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      all:
+        gns3_ppa_remove_after_install: false
+verifier:
+  name: ansible
