@@ -17,4 +17,6 @@ galaxy_info:
 
 dependencies:
   - role: geerlingguy.docker  # https://github.com/geerlingguy/ansible-role-docker.git
-    when: not lookup('env', 'MOLECULE_FILE')
+    when:
+      - not lookup('env', 'MOLECULE_FILE')
+      - not lookup('env', 'GITHUB_WORKFLOW')
