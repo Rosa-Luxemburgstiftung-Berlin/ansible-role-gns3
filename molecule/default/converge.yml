@@ -7,6 +7,6 @@
       group:
         name: docker
         system: true
-    - name: "Include rls.gns3server"
+    - name: "Include ansible-role-gns3"
       include_role:
-        name: "rls.gns3server"
+        name: "ansible-role-gns3"
