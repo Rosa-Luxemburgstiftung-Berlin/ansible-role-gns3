@@ -4,6 +4,9 @@ name: ansible-lint
 on:
   pull_request:
   push:
+  schedule:
+    - cron: "20 6 * * 1"
+
 jobs:
   build:
     runs-on: ubuntu-latest
