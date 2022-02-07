@@ -8,7 +8,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          path: 'rls.gns3server'
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -18,8 +21,12 @@ jobs:
       - name: Install test dependencies.
         run: pip3 install ansible "molecule[docker,lint]" yamllint ansible-lint requests
 
+      - name: ls molecule
+        run: ls rls.gns3server/molecule
+
       - name: run molecule tests
         run: molecule test
+        working-directory: rls.gns3server
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
