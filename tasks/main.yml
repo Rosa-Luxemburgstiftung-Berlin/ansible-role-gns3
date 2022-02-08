@@ -1,7 +1,7 @@
 ---
 - name: set desired version of the ppa for ubuntu
   set_fact:
-    gns3_ppa_distribution: "{{ gns3_ppa_distribution }}"
+    gns3_ppa_distribution: "{{ ansible_distribution_release }}"
   when:
     - gns3_ppa_distribution is undefined
     - ansible_distribution == 'Ubuntu'
