@@ -37,14 +37,6 @@
     - ansible_distribution == 'Debian'
     - ansible_distribution_version | int >= 10
 
-- name: set desired version of the ppa for debian stretch
-  set_fact:
-    gns3_ppa_distribution: xenial
-  when:
-    - gns3_ppa_distribution is undefined
-    - ansible_distribution == 'Debian'
-    - ansible_distribution_version | int >= 9
-
 - name: assert gns3_ppa_distribution is set
   assert:
     that: gns3_ppa_distribution is defined
