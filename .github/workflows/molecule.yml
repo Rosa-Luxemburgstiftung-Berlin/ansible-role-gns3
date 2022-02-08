@@ -23,9 +23,6 @@ jobs:
       - name: Install test dependencies.
         run: pip3 install ansible "molecule[docker,lint]" yamllint ansible-lint requests
 
-      - name: debug env
-        run: env
-
       - name: run molecule tests
         run: molecule test
         working-directory: rls.gns3server
