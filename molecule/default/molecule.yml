@@ -15,6 +15,19 @@ platforms:
       - SYS_ADMIN
     security_opts:
       - seccomp=unconfined
+  - name: debian-buster
+    image: debian:buster
+    dockerfile: Dockerfile-debian-buster.j2
+    privileged: true
+    override_command: false
+    tmpfs:
+      - /run
+      - /run/lock
+      - /tmp
+    capabilities:
+      - SYS_ADMIN
+    security_opts:
+      - seccomp=unconfined
 
 provisioner:
   name: ansible
