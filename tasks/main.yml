@@ -1,6 +1,6 @@
 ---
 - name: set desired version of the ppa for ubuntu
-  set_fact:
+  ansible.builtin.set_fact:
     gns3_ppa_distribution: "{{ ansible_distribution_release }}"
   when:
     - gns3_ppa_distribution is undefined
@@ -8,7 +8,7 @@
 
 # FIXME: set to jammy as soon as it is available
 - name: set desired version of the ppa for debian bookworm
-  set_fact:
+  ansible.builtin.set_fact:
     gns3_ppa_distribution: impish
   when:
     - gns3_ppa_distribution is undefined
@@ -16,7 +16,7 @@
     - ansible_distribution_version | int >= 12
 
 - name: set desired version of the ppa for debian bullseye
-  set_fact:
+  ansible.builtin.set_fact:
     gns3_ppa_distribution: focal
     gns3_pip_packages:
       - gns3-server
@@ -27,7 +27,7 @@
     - ansible_distribution_version | int >= 11
 
 - name: set desired version of the ppa for debian buster
-  set_fact:
+  ansible.builtin.set_fact:
     gns3_ppa_distribution: bionic
     gns3_pip_packages:
       - gns3-server
@@ -38,59 +38,59 @@
     - ansible_distribution_version | int >= 10
 
 - name: assert gns3_ppa_distribution is set
-  assert:
+  ansible.builtin.assert:
     that: gns3_ppa_distribution is defined
     fail_msg: "unable to set 'gns3_ppa_distribution' automatically"
     success_msg: "using gns3_ppa_distribution {{ gns3_ppa_distribution }}"
 
 - name: install prereq
-  apt:
+  ansible.builtin.apt:
     name: "{{ gns3_prereq }}"
     update_cache: true
 
 - name: ensure packes from pip are not installed via dpkg
-  apt:
+  ansible.builtin.apt:
     name: "{{ gns3_pip_packages | intersect(gns3_ppa_packages) }}"
     state: absent
     purge: true
 
 - name: add gns3-ppa key
-  apt_key:
+  ansible.builtin.apt_key:
     keyserver: keyserver.ubuntu.com
     id: "{{ gns3_ppa_key }}"
     state: present
 
 - name: set up ppa in sources list
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "deb {{ gns3_ppa_url }} {{ gns3_ppa_distribution }} {{ gns3_ppa_component }}"
     state: present
     filename: gns3-ppa
 
 - name: install packages via pip
-  pip:
+  ansible.builtin.pip:
     name: "{{ gns3_pip_packages }}"
     executable: pip3
   when: gns3_pip_packages
 
 - name: install packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ gns3_ppa_packages | difference(gns3_pip_packages) }}"
 
 - name: remove ppa in sources list
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "deb {{ gns3_ppa_url }} {{ gns3_ppa_distribution }} {{ gns3_ppa_component }}"
     state: absent
     filename: gns3-ppa
   when: gns3_ppa_remove_after_install
 
 - name: "create gns3_system_group {{ gns3_system_group }}"
-  group:
+  ansible.builtin.group:
     name: "{{ gns3_system_group }}"
     system: true
   notify: gns3server
 
 - name: "create gns3_system_user {{ gns3_system_user }}"
-  user:
+  ansible.builtin.user:
     name: "{{ gns3_system_user }}"
     system: true
     group: "{{ gns3_system_group }}"
@@ -99,7 +99,7 @@
   notify: gns3server
 
 - name: create gns3 cfg dir
-  file:
+  ansible.builtin.file:
     path: /etc/gns3
     state: directory
     mode: 0750
@@ -108,7 +108,7 @@
   notify: gns3server
 
 - name: create gns3 log dir
-  file:
+  ansible.builtin.file:
     path: /var/log/gns3
     state: directory
     mode: 0750
@@ -117,7 +117,7 @@
   notify: gns3server
 
 - name: configure gns3 server
-  template:
+  ansible.builtin.template:
     src: gns3_server.conf.j2
     dest: /etc/gns3/gns3_server.conf
     mode: 0640
@@ -126,7 +126,7 @@
   notify: gns3server
 
 - name: install systemd service file
-  template:
+  ansible.builtin.template:
     src: gns3.service.j2
     dest: /lib/systemd/system/gns3.service
     mode: 0755
@@ -134,14 +134,14 @@
     group: root
 
 - name: enable systemd service
-  systemd:
+  ansible.builtin.systemd:
     name: gns3.service
     enabled: true
     masked: false
     daemon_reload: true
 
 - name: start systemd service
-  systemd:
+  ansible.builtin.systemd:
     name: gns3.service
     state: started
 
