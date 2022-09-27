@@ -6,6 +6,9 @@ on:
   push:
   schedule:
     - cron: "5 6 * * 1"
+concurrency: 
+  group: molecule
+  cancel-in-progress: false
 jobs:
   ansible-latest:
     name: latest ansible version
