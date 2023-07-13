@@ -2,9 +2,9 @@
 driver:
   name: docker
 platforms:
-  - name: debian-bookworm
-    image: debian:bookworm
-    dockerfile: Dockerfile-debian-bookworm.j2
+  - name: instance
+    image: ${MOLECULE_DISTRO:-debian}:${MOLECULE_DISTROCODENAME:-bookworm}
+    dockerfile: Dockerfile-${MOLECULE_DISTRO:-debian}-${MOLECULE_DISTROCODENAME:-bookworm}.j2
     privileged: true
     override_command: false
     tmpfs:
@@ -15,64 +15,6 @@ platforms:
       - SYS_ADMIN
     security_opts:
       - seccomp=unconfined
-
-  - name: debian-bullseye
-    image: debian:bullseye
-    dockerfile: Dockerfile-debian-bullseye.j2
-    privileged: true
-    override_command: false
-    tmpfs:
-      - /run
-      - /run/lock
-      - /tmp
-    capabilities:
-      - SYS_ADMIN
-    security_opts:
-      - seccomp=unconfined
-
-  - name: debian-buster
-    image: debian:buster
-    dockerfile: Dockerfile-debian-buster.j2
-    privileged: true
-    override_command: false
-    tmpfs:
-      - /run
-      - /run/lock
-      - /tmp
-    capabilities:
-      - SYS_ADMIN
-    security_opts:
-      - seccomp=unconfined
-
-  - name: ubuntu-focal
-    image: ubuntu:focal
-    dockerfile: Dockerfile-ubuntu-focal.j2
-    privileged: true
-    override_command: false
-    tmpfs:
-      - /run
-      - /run/lock
-      - /tmp
-    capabilities:
-      - SYS_ADMIN
-    security_opts:
-      - seccomp=unconfined
-
-# FIXME bionic has some strance locale problems
-#   indifferent if we use the server from ppa or pip3
-#  - name: ubuntu-bionic
-#    image: ubuntu:bionic
-#    dockerfile: Dockerfile-ubuntu-bionic.j2
-#    privileged: true
-#    override_command: false
-#    tmpfs:
-#      - /run
-#      - /run/lock
-#      - /tmp
-#    capabilities:
-#      - SYS_ADMIN
-#    security_opts:
-#      - seccomp=unconfined
 
 provisioner:
   name: ansible
