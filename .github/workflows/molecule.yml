@@ -22,7 +22,7 @@ jobs:
           - debian12
           - debian11
           - debian10
-          #- ubuntu2204
+          - ubuntu2204
           - ubuntu2004
           - ubuntu1804
         include:
@@ -41,6 +41,9 @@ jobs:
           - distro: debian10
             did: debian
             codename: buster
+          - distro: ubuntu2004
+            did: ubuntu
+            codename: jammy
           - distro: ubuntu2004
             did: ubuntu
             codename: focal
