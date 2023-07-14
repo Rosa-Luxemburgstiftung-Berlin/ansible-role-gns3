@@ -19,12 +19,12 @@ jobs:
           - pinned ansible
           - legacy ansible
         distro:
-          - debian-bookworm
-          - debian-bullseye
-          - debian-buster
-          #- ubuntu-jammy
-          - ubuntu-focal
-          - ubuntu-bionic
+          - debian12
+          - debian11
+          - debian10
+          #- ubuntu2204
+          - ubuntu2004
+          - ubuntu1804
         include:
           - ansible: latest ansible
             pip3deps: 'dnspython ansible molecule "molecule-plugins[docker]" yamllint ansible-lint "requests<2.29" "urllib3<2"'
@@ -32,19 +32,19 @@ jobs:
             pip3deps: 'dnspython "ansible==7.4.0" "molecule[docker,lint]==3.5.2" "yamllint==1.26.0" "ansible-lint==6.4.0" "requests<2.29" "urllib3<2"'
           - ansible: legacy ansible
             pip3deps: 'dnspython "ansible==2.9.27" "molecule[docker,lint]==3.2.3" "yamllint==1.24.2" "ansible-lint==4.2.0" "requests<2.29" "urllib3<2"'
-          - distro: debian-bookworm
+          - distro: debian12
             did: debian
             codename: bookworm
-          - distro: debian-bullseye
+          - distro: debian11
             did: debian
             codename: bullseye
-          - distro: debian-buster
+          - distro: debian10
             did: debian
             codename: buster
-          - distro: ubuntu-focal
+          - distro: ubuntu2004
             did: ubuntu
             codename: focal
-          - distro: ubuntu-bionic
+          - distro: ubuntu1804
             did: ubuntu
             codename: bionic
     steps:
