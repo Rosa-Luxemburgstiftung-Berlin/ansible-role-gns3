@@ -6,10 +6,9 @@
     - gns3_ppa_distribution is undefined
     - ansible_distribution == 'Ubuntu'
 
-# FIXME: set to jammy as soon as it is available
 - name: set desired version of the ppa for debian bookworm
   ansible.builtin.set_fact:
-    gns3_ppa_distribution: impish
+    gns3_ppa_distribution: lunar
   when:
     - gns3_ppa_distribution is undefined
     - ansible_distribution == 'Debian'
