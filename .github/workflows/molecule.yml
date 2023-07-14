@@ -23,7 +23,7 @@ jobs:
           - debian-buster
           #- ubuntu-jammy
           - ubuntu-focal
-          #- ubuntu-bionic
+          - ubuntu-bionic
         include:
           - ansible: latest ansible
             pip3deps: 'dnspython ansible molecule "molecule-plugins[docker]" yamllint ansible-lint "requests<2.29" "urllib3<2"'
@@ -43,6 +43,9 @@ jobs:
           - distro: ubuntu-focal
             did: ubuntu
             codename: focal
+          - distro: ubuntu-bionic
+            did: ubuntu
+            codename: bionic
     steps:
       - uses: actions/checkout@v2
         with:
