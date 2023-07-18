@@ -14,3 +14,7 @@
     - name: "Test gns3 uri works"
       uri:
         url: "http://{{ ansible_default_ipv4.address }}:3080/static/web-ui/bundled"
+      register: _urires
+      retries: 3
+      delay: 10
+      until: "_urires.status == 200"
