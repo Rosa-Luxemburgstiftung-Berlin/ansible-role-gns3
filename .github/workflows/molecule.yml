@@ -44,9 +44,6 @@ jobs:
           - distro: ubuntu2004
             did: ubuntu
             codename: focal
-          - distro: ubuntu1804
-            did: ubuntu
-            codename: bionic
     steps:
       - uses: actions/checkout@v2
         with:
