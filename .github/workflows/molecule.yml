@@ -38,9 +38,6 @@ jobs:
           - distro: debian11
             did: debian
             codename: bullseye
-          - distro: debian10
-            did: debian
-            codename: buster
           - distro: ubuntu2204
             did: ubuntu
             codename: jammy
