@@ -69,7 +69,7 @@
   ansible.builtin.pip:
     name: "{{ gns3_pip_packages }}"
     executable: pip3
-  when: gns3_pip_packages
+  when: gns3_pip_packages | length > 0
 
 - name: install packages
   ansible.builtin.apt:
