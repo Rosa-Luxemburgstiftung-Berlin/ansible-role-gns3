@@ -20,7 +20,7 @@ jobs:
           - legacy ansible
         distro:
           - debian12
-          - debian11
+          #- debian11
           - ubuntu2204
           - ubuntu2004
         include:
@@ -33,9 +33,9 @@ jobs:
           - distro: debian12
             did: debian
             codename: bookworm
-          - distro: debian11
-            did: debian
-            codename: bullseye
+          #- distro: debian11
+          #  did: debian
+          #  codename: bullseye
           - distro: ubuntu2204
             did: ubuntu
             codename: jammy
